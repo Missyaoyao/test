@@ -1,0 +1,81 @@
+
+
+在Ubuntu 18.04 系统下安装mysql
+
+1. 打开终端，#命令1
+					sudo apt-get update
+			 #命令2
+					sudo apt-get install mysql-server
+			
+2. 初始化Mysql 配置
+	
+	# 命令    sudo mysql_secure_installation
+	
+	配置项较多，如下所示：
+
+		#1
+		VALIDATE PASSWORD PLUGIN can be used to test passwords...
+		Press y|Y for Yes, any other key for No: N (我的选项)
+
+		#2
+		Please set the password for root here...
+		New password: (输入密码)
+		Re-enter new password: (重复输入)
+
+		#3
+		By default, a MySQL installation has an anonymous user,
+		allowing anyone to log into MySQL without having to have
+		a user account created for them...
+		Remove anonymous users? (Press y|Y for Yes, any other key for No) : N (我的选项)
+
+		#4
+		Normally, root should only be allowed to connect from
+		'localhost'. This ensures that someone cannot guess at
+		the root password from the network...
+		Disallow root login remotely? (Press y|Y for Yes, any other key for No) : Y (我的选项)
+
+		#5
+		By default, MySQL comes with a database named 'test' that
+		anyone can access...
+		Remove test database and access to it? (Press y|Y for Yes, any other key for No) : N (我的选项)
+
+		#6
+		Reloading the privilege tables will ensure that all changes
+		made so far will take effect immediately.
+		Reload privilege tables now? (Press y|Y for Yes, any other key for No) : Y (我的选项)
+	
+3. 检查mysql服务状态
+	# 命令    systemctl status mysql.service
+	
+4. 进入mysql
+    # 命令    sudo mysql -uroot -p
+	
+5. 配置数据库字符集
+	由于我是使用apt 安装的，所以在目录：/etc/mysql/mysql.conf.d  下有文件： mysqld.cnf
+	
+	在该文件中添加内容:  在[mysqld] 内容下方增加:
+													[mysqld]
+													 character-set-server=utf8
+													 
+		注意：修改这个文件可先修改权限：sudo chmod 777 mysqld.cnf，然后修改完成后再改回来：sudo chmod 644 mysqld.cnf
+	重启MySQL服务：  sudo service mysql restart
+	
+	查看字符集： mysql -uroot -p 
+				show variables like 'character%';
+				+--------------------------+----------------------------+
+				| Variable_name            | Value                      |
+				+--------------------------+----------------------------+
+				| character_set_client     | utf8                       |
+				| character_set_connection | utf8                       |
+				| character_set_database   | utf8                       |
+				| character_set_filesystem | binary                     |
+				| character_set_results    | utf8                       |
+				| character_set_server     | utf8                       |
+				| character_set_system     | utf8                       |
+				| character_sets_dir       | /usr/share/mysql/charsets/ |
+				+--------------------------+----------------------------+
+
+				
+	
+		
+	
