@@ -1,0 +1,57 @@
+
+（这种方法是需要修改源码）
+
+首先pip安装pymysql：
+
+		#通过pip安装pymysql     pip install pymysql
+		
+		
+然后在工程的__init__.py文件中写入如下代码：
+
+		#__init__.py
+		import pymysql
+		pymysql.install_as_MySQLdb()
+
+
+此时,会报错:  mysql ImproperlyConfigured: mysqlclient 1.3.13 or newer is required; you have 0.9.3
+
+不要慌，找到文件夹:(从django报错的信息中找到对应文件夹，这里有坑！！！)
+	文件夹：home/tarena/.local/lib/python3.6/site-packages/django/db/backends/mysql
+	
+	
+			tarena@tarena-gongyao:~/.local/lib/python3.6/site-packages/django/db/backends/mysql$ ls -l
+									总用量 80
+									-rw-r--r-- 1 tarena tarena 13783 9月   3 14:34 base.py
+									-rw-r--r-- 1 tarena tarena  1834 8月  29 11:24 client.py
+									-rw-r--r-- 1 tarena tarena   704 8月  29 11:24 compiler.py
+									-rw-r--r-- 1 tarena tarena  3058 8月  29 11:24 creation.py
+									-rw-r--r-- 1 tarena tarena  4548 8月  29 11:24 features.py
+									-rw-r--r-- 1 tarena tarena     0 8月  29 11:24 __init__.py
+									-rw-r--r-- 1 tarena tarena  8779 8月  29 11:24 introspection.py
+									-rw-r--r-- 1 tarena tarena 12911 9月   3 14:53 operations.py
+									drwxr-xr-x 2 tarena tarena  4096 9月   3 14:53 __pycache__
+									-rw-r--r-- 1 tarena tarena  4598 8月  29 11:24 schema.py
+									-rw-r--r-- 1 tarena tarena  2565 8月  29 11:24 validation.py
+									
+		（千万不要进入错误的文件夹，例如：/usr/lib/python3/dist-packages/django/db/backends/mysql/base.py）			
+	
+	重新运行django项目，此时还会报错：AttributeError: ‘str’ object has no attribute ‘decode’
+	
+		不要慌，
+				#找到operations.py文件（46行,版本不同行数不同哈~自个儿find一下），将decode改为encode
+				#linux vim 查找快捷键：？decode
+				if query is not None:
+					query = query.decode(errors='replace')
+				return query
+				#改为
+				if query is not None:
+					query = query.encode(errors='replace')
+				return query
+
+
+另外，如果报错：MySQL: django.db.utils.OperationalError: (1698, “Access denied for user 'root'@'localhost'”) with correct username and pw，可以使用如下命令，重新创建一个用户，具备使用数据库的权限
+
+		create user 'django'@'localhost' identified by '123456';
+		grant usage on *.* to 'django'@'localhost';
+
+		grant all privileges on *.* to django@localhost identified by '123456';
