@@ -1,0 +1,123 @@
+
+
+Linux 常用命令
+
+uname -m 显示机器的处理器架构
+uname -r 显示内核
+
+例：
+	tarena@tarena-gongyao:~$ uname -m
+	x86_64
+	tarena@tarena-gongyao:~$ uname -r
+	4.18.0-15-generic
+	
+
+shutdown -h now 关闭系统
+shutdown -r now  重启
+reboot 重启
+logout 注销
+
+cd /home 进入 '/ home' 目录' 
+cd .. 返回上一级目录 
+cd ../.. 返回上两级目录 
+cd 进入个人的主目录 
+cd ~user1 进入个人的主目录 
+cd - 返回上次所在的目录 
+pwd 显示工作路径 
+ls 查看目录中的文件 
+ls -l 显示文件和目录的详细资料 
+ls -a 显示隐藏文件 
+tree 显示文件和目录由根目录开始的树形结构
+
+
+文件和目录
+mkdir dir1 创建一个叫做 'dir1' 的目录' 
+mkdir dir1 dir2 同时创建两个目录 
+mkdir -p /tmp/dir1/dir2 创建一个目录树 
+rm -f file1 删除一个叫做 'file1' 的文件' 
+rmdir dir1 删除一个叫做 'dir1' 的目录' 
+rm -rf dir1 删除一个叫做 'dir1' 的目录并同时删除其内容 
+rm -rf dir1 dir2 同时删除两个目录及它们的内容 
+mv dir1 new_dir 重命名/移动 一个目录 
+cp file1 file2 复制一个文件 
+cp -a dir1 dir2 复制一个目录到dir2目录
+
+
+文件搜索
+find / -name file 从 '/' 开始进入根文件系统搜索文件和目录 
+which python3 显示一个文件货可执行文件的完整路径
+
+
+磁盘控件
+df -h 显示已挂载的分区列表
+
+
+apt软件工具
+apt-get install package_name 安装/更新一个 deb 包 
+apt-get update 升级列表中的软件包 
+
+文件权限
+ls -l 显示权限
+chmod 644 test.txt
+chmod a+x test.txt  表示所有的都增加可执行权限
+chmod o+wx test.txt  表示给其它用户增加写和可执行权限
+
+a等价于 用户(u)＋组(g)＋其他组( o )。　a+x 就是给用户，组，其他组都加上x(可执行)权限
+
+
+
+打包和压缩文件
+tar -jxvf archive.tar.bz2 解压一个bzip2格式的压缩包 
+tar -cvfz archive.tar.gz dir1 创建一个gzip格式的压缩包 
+tar -zxvf archive.tar.gz 解压一个gzip格式的压缩包 
+zip file1.zip file1 创建一个zip格式的压缩包 
+zip -r file1.zip file1 file2 dir1 将几个文件和目录同时压缩成一个zip格式的压缩包 
+unzip file1.zip 解压一个zip格式压缩包 
+
+
+查看文件内容
+cat file1
+tail -f file 实时查看文件
+tail -200 file1 查看一个文件的最后两行
+more file 查看一个长文件的内容
+
+
+inux提供管道符号“|”，作用是命令1的输出内容作为命令2的输入内容。通常与grep命令一起使用。
+
+　　格式：命令1 |命令2
+
+grep命令：全称为global regular expression print,表示全局正则表达式
+
+　　功能：用于过滤或者搜索特定的字符。可以结合模糊搜索一起使用，十分灵活。
+
+　　格式 ：grep [option] pattern [file]
+
+　　　　　 -i 或者--ignore-case 表示忽略大小写区别。
+
+例如：查看jason.txt文件中含有hello字符的信息
+
+　　grep -r h* jason.txt
+
+可以与其他命令一起使用：more install.log | grep -i man
+
+grep主要是用于搜索特定字符，比较方便。
+
+ 
+
+1. diff：命令能够比较两个文件的差异，有多少内容不一样，diff命令的第一个参数被视为旧文件而第二个参数被视为新文件
+
+　　例如：diff hong.txt hong_new.txt 结果中出现 '<'代表删除的行，而'>'代表添加的行。
+
+2. echo命令：在linux中主要用于向文件中输入和输出内容，是单行追加，也可以清空文件内容
+
+　　　　 >是覆盖源文件内容
+
+　　　　>>是在源文件后面追加内容，追加的内容在下一行添加。
+
+　　　　清空文件内容时：echo "" >jason.txt 这时文件里面还是有内容只不过是空行而已。
+
+ps 查看进程
+查看端口占用： netstat -ntlp  查看tcp端口占用
+				netstat -ntulp | grep mysql
+				
+			
